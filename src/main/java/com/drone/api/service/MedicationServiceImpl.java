@@ -41,14 +41,14 @@ public class MedicationServiceImpl implements MedicationService {
     }
 
     @Override
-    public MedicationDTO getMedication(final String code) {
+    public MedicationDTO getMedication(String code) {
         return medicationRepository.findById(code)
                 .map(medication -> mapper.map(medication, MedicationDTO.class))
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
     @Override
-    public MedicationDTO addMedication(final MedicationDTO medicationDTO) {
+    public MedicationDTO addMedication(MedicationDTO medicationDTO) {
         Medication medication = mapper.map(medicationDTO, Medication.class);
         medicationRepository.save(medication);
         return medicationDTO;

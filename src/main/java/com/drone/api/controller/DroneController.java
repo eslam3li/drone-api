@@ -26,8 +26,8 @@ public class DroneController {
     }
 
     @PutMapping("drone/medications")
-    public ResponseEntity<DroneDTO> loadDroneMedications(@RequestParam("serialnumber") @Valid String serialNumber,
-                                                         @RequestParam("medicationcodes") @Valid List<String> medicationCodes) {
+    public ResponseEntity<DroneDTO> loadDroneWithMedications(@RequestParam("serialnumber") @Valid String serialNumber,
+                                                             @RequestParam("medicationcodes") @Valid List<String> medicationCodes) {
         return ResponseEntity.ok(droneService.loadDroneMedications(serialNumber, medicationCodes));
     }
 

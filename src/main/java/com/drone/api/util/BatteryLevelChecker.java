@@ -8,6 +8,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 
 import java.util.List;
+import java.util.UUID;
 
 @Slf4j
 @Configuration
@@ -20,6 +21,11 @@ public class BatteryLevelChecker {
         this.droneService = droneService;
     }
 
+    public static void main(String[] args) {
+        for (int i = 0; i <= 5; i++)
+            System.out.println(UUID.randomUUID());
+    }
+
     @Scheduled(cron = "00 03 * * * ?")
     public void batteryLevelChecker() {
         log.info("Checking all drones battery level");
@@ -30,7 +36,7 @@ public class BatteryLevelChecker {
                 log.info("{} drone with serial number [{}], has {}% battery capacity",
                         drone.getModel(),
                         drone.getSerialNumber(),
-                        drone.getBatteryCapacity() * 100);
+                        drone.getBatteryCapacity() / 100);
             }
         } else
             log.info("No Drone found!");

@@ -64,7 +64,7 @@ public class DroneServiceImpl implements DroneService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Drone not found: Invalid serial number"));
 
         boolean isLoadable = checkLoadable(drone.getBatteryCapacity());
-
+// todo: allow only idle drone to be loaded with medications
         if (isLoadable) {
             drone.setState(DroneState.LOADING.name());
             final int minSize = 0;
@@ -111,7 +111,7 @@ public class DroneServiceImpl implements DroneService {
 
     @Override
     public List<MedicationDTO> getDroneMedications(String serialNumber) {
-        log.error("Get medications loaded on a drone...");
+        log.info("Get medications loaded on a drone...");
         Drone drone = droneRepository.findById(serialNumber)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Drone not found: Invalid serial number"));
 
