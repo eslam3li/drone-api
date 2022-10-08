@@ -8,22 +8,16 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 
 import java.util.List;
-import java.util.UUID;
 
 @Slf4j
 @Configuration
 @EnableScheduling
 public class BatteryLevelChecker {
 
-    private DroneServiceImpl droneService;
+    private final DroneServiceImpl droneService;
 
     BatteryLevelChecker(DroneServiceImpl droneService) {
         this.droneService = droneService;
-    }
-
-    public static void main(String[] args) {
-        for (int i = 0; i <= 5; i++)
-            System.out.println(UUID.randomUUID());
     }
 
     @Scheduled(cron = "00 03 * * * ?")
