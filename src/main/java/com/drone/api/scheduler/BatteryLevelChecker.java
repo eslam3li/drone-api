@@ -1,4 +1,4 @@
-package com.drone.api.util;
+package com.drone.api.scheduler;
 
 import com.drone.api.model.DroneDTO;
 import com.drone.api.service.DroneServiceImpl;
@@ -20,6 +20,7 @@ public class BatteryLevelChecker {
         this.droneService = droneService;
     }
 
+    // https://docs.oracle.com/cd/E12058_01/doc/doc.1014/e12030/cron_expressions.htm
     @Scheduled(cron = "00 03 * * * ?")
     public void batteryLevelChecker() {
         log.info("Checking all drones battery level");

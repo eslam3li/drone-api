@@ -6,10 +6,10 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.util.List;
 
-@Entity
 @Getter
 @Setter
-public class Drone {
+@Entity
+public class DroneEntity {
 
     @Id
     @Column(length = 100)
@@ -33,6 +33,6 @@ public class Drone {
             joinColumns = @JoinColumn(name = "drone_serial_number"),
             inverseJoinColumns = @JoinColumn(name = "medication_code")
     )
-    private List<Medication> medications;
+    private List<MedicationEntity> medications;
 
 }

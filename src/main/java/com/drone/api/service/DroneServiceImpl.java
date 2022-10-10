@@ -1,7 +1,7 @@
 package com.drone.api.service;
 
-import com.drone.api.entity.Drone;
-import com.drone.api.entity.Medication;
+import com.drone.api.entity.DroneEntity;
+import com.drone.api.entity.MedicationEntity;
 import com.drone.api.model.DroneDTO;
 import com.drone.api.model.MedicationDTO;
 import com.drone.api.model.enums.DroneModelWeightLimit;
@@ -40,12 +40,12 @@ public class DroneServiceImpl implements DroneService {
     public DroneDTO registerDrone(DroneDTO droneDTO) {
         log.info("Register drone...");
         boolean droneExist = droneRepository.existsById(droneDTO.getSerialNumber());
-        Drone drone;
+        DroneEntity drone;
 
         if (!droneExist) {
             droneDTO.setWeightLimit(DroneModelWeightLimit.getWeightLimit(droneDTO.getModel()));
             droneDTO.setState(DroneState.IDLE.name());
-            drone = mapper.map(droneDTO, Drone.class);
+            drone = mapper.map(droneDTO, DroneEntity.class);
             droneRepository.save(drone);
         } else {
             log.warn("Drone already registered.");
@@ -60,7 +60,7 @@ public class DroneServiceImpl implements DroneService {
     public DroneDTO loadDroneMedications(String serialNumber, List<String> medicationCodes) {
 
         log.info("Load a drone [{}] with medication items...", serialNumber);
-        Drone drone = droneRepository.findById(serialNumber)
+        DroneEntity drone = droneRepository.findById(serialNumber)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Drone not found: Invalid serial number"));
 
         boolean isLoadable = checkLoadable(drone.getBatteryCapacity());
@@ -70,7 +70,7 @@ public class DroneServiceImpl implements DroneService {
             final int minSize = 0;
 
             log.info("Fetching medication items data from MEDICATION TABLE.");
-            List<Medication> medications = medicationRepository.findAllById(medicationCodes);
+            List<MedicationEntity> medications = medicationRepository.findAllById(medicationCodes);
             if (medications.size() > minSize) {
                 if (checkWeightLimit(medications, drone.getModel())) {
                     drone.setMedications(medications);
@@ -96,10 +96,10 @@ public class DroneServiceImpl implements DroneService {
     @Override
     public List<DroneDTO> getLoadableDrones() {
         log.info("Get loadable drones...");
-        List<Drone> drones = droneRepository.findDroneByState(DroneState.IDLE.name());
+        List<DroneEntity> drones = droneRepository.findDroneByState(DroneState.IDLE.name());
         List<DroneDTO> result = new ArrayList<>();
         if (drones != null) {
-            for (Drone droneValue : drones) {
+            for (DroneEntity droneValue : drones) {
                 if (checkLoadable(droneValue.getBatteryCapacity())) {
                     result.add(mapper.map(droneValue, DroneDTO.class));
                 }
@@ -112,10 +112,10 @@ public class DroneServiceImpl implements DroneService {
     @Override
     public List<MedicationDTO> getDroneMedications(String serialNumber) {
         log.info("Get medications loaded on a drone...");
-        Drone drone = droneRepository.findById(serialNumber)
+        DroneEntity drone = droneRepository.findById(serialNumber)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Drone not found: Invalid serial number"));
 
-        List<Medication> meds = drone.getMedications();
+        List<MedicationEntity> meds = drone.getMedications();
 
         if (meds != null) {
             log.info("Successfully fetched medications loaded on drone [{}].", serialNumber);
@@ -131,7 +131,7 @@ public class DroneServiceImpl implements DroneService {
     @Override
     public double getDroneBatteryLevel(String serialNumber) {
         log.info("Getting drone[{}] battery level...", serialNumber);
-        Drone drone = droneRepository.findById(serialNumber)
+        DroneEntity drone = droneRepository.findById(serialNumber)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Drone not found: Invalid serial number"));
         log.info("Fetched drone[{}] battery level.", serialNumber);
         return drone.getBatteryCapacity();
@@ -145,10 +145,10 @@ public class DroneServiceImpl implements DroneService {
                 .collect(Collectors.toList());
     }
 
-    private boolean checkWeightLimit(List<Medication> medications, String model) {
+    private boolean checkWeightLimit(List<MedicationEntity> medications, String model) {
 
         double medsWeight = 0.0;
-        for (Medication medication : medications) {
+        for (MedicationEntity medication : medications) {
             medsWeight += medication.getWeight();
         }
 

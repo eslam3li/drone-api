@@ -6,10 +6,10 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.util.List;
 
-@Entity
 @Getter
 @Setter
-public class Medication {
+@Entity
+public class MedicationEntity {
 
     @Id
     @Column(nullable = false, updatable = false)
@@ -25,6 +25,6 @@ public class Medication {
     private String image;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "medications")
-    private List<Drone> drones;
+    private List<DroneEntity> drones;
 
 }

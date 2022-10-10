@@ -1,6 +1,6 @@
 package com.drone.api.service;
 
-import com.drone.api.entity.Medication;
+import com.drone.api.entity.MedicationEntity;
 import com.drone.api.model.MedicationDTO;
 import com.drone.api.repository.MedicationRepository;
 import org.modelmapper.ModelMapper;
@@ -49,7 +49,7 @@ public class MedicationServiceImpl implements MedicationService {
 
     @Override
     public MedicationDTO addMedication(MedicationDTO medicationDTO) {
-        Medication medication = mapper.map(medicationDTO, Medication.class);
+        MedicationEntity medication = mapper.map(medicationDTO, MedicationEntity.class);
         medicationRepository.save(medication);
         return medicationDTO;
     }
