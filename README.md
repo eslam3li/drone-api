@@ -2,12 +2,12 @@
 
 ## Table of contents
 
-> * [Title](#Drone-rest-aPI)
+>* [Title](#Drone-rest-aPI)
 >* [About](#about)
 >* [Requirements](#requirements)
 >* [APIs](#apis)
    >
-* [Register a drone](#register-a-drone)
+>* [Register a drone](#register-a-drone)
 >    * [Load a drone with medication items](#load-a-drone-with-medication-items)
 >    * [Get loaded medication items for a given drone](#get-loaded-medication-items-for-a-given-drone)
 >    * [Get drones available for loading](#get-drones-available-for-loading)
